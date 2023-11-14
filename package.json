@@ -7,6 +7,11 @@
     "build:tsup": "rm -rf dist/ && tsup-node ./src/index.ts --format cjs,esm --dts",
     "build:tsc": "rm -rf dist/ && tsc"
   },
+  "homepage": "https://github.com/damartripamungkas/node-interval-return",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/damartripamungkas/node-interval-return.git"
+  },
   "keywords": [
     "setInterval",
     "setIntervalReturn",
