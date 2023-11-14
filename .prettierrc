@@ -1,0 +1,32 @@
+{
+  "overrides": [
+    {
+      "files": "*.json",
+      "options": {
+        "tabWidth": 2
+      }
+    },
+    {
+      "files": "*.js",
+      "options": {
+        "printWidth": 200,
+        "tabWidth": 2,
+        "useTabs": false,
+        "semi": true,
+        "arrowParens": "always",
+        "bracketSameLine": false
+      }
+    },
+    {
+      "files": "*.ts",
+      "options": {
+        "printWidth": 200,
+        "tabWidth": 2,
+        "useTabs": false,
+        "semi": true,
+        "arrowParens": "always",
+        "bracketSameLine": false
+      }
+    }
+  ]
+}
