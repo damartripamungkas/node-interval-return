@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Simple interval return with promise",
   "scripts": {
-    "test": "jest",
-    "build:tsup": "rm -rf dist/ && tsup-node ./src/index.ts --format cjs,esm --dts",
+    "test": "node ./test/interval.js",
+    "build:tsup": "rm -rf dist/ && tsup ./src/index.ts --format cjs,esm --dts",
     "build:tsc": "rm -rf dist/ && tsc"
   },
   "homepage": "https://github.com/damartripamungkas/node-interval-return",
