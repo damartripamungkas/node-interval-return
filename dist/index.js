@@ -21,17 +21,21 @@ var src_exports = {};
 __export(src_exports, {
   default: () => src_default,
   interval: () => interval,
-  intervalReturn: () => intervalReturn
+  intervalReturn: () => intervalReturn,
+  recursiveReturn: () => recursiveReturn
 });
 module.exports = __toCommonJS(src_exports);
 var intervalReturn = async (ms, doFirst, callback) => {
   return new Promise((resolve, reject) => {
+    let toggle = true;
     const returnCallback = (id) => {
       callback(
         (val) => {
+          toggle = false;
           clearInterval(id), resolve(val);
         },
         (val) => {
+          toggle = false;
           clearInterval(id), reject(val);
         }
       );
@@ -40,20 +44,48 @@ var intervalReturn = async (ms, doFirst, callback) => {
       returnCallback(null);
     }
     const idInterval = setInterval(() => {
-      returnCallback(idInterval);
+      if (toggle) {
+        returnCallback(idInterval);
+      }
     }, ms);
   });
 };
+var recursiveReturn = async (callback) => {
+  return new Promise((resolve, reject) => {
+    let toggle = true;
+    const returnCallback = () => {
+      callback(
+        () => {
+          if (toggle) {
+            returnCallback();
+          }
+        },
+        (val) => {
+          toggle = false;
+          resolve(val);
+        },
+        (val) => {
+          toggle = false;
+          reject(val);
+        }
+      );
+    };
+    returnCallback();
+  });
+};
 var interval = (ms, doFirst, callback) => {
+  let toggle = true;
   if (doFirst === true) {
     callback(() => {
       clearInterval(null);
     });
   }
   const idInterval = setInterval(() => {
-    callback(() => {
-      clearInterval(idInterval);
-    });
+    if (toggle) {
+      callback(() => {
+        clearInterval(idInterval);
+      });
+    }
   }, ms);
   return {
     idInterval,
@@ -62,9 +94,10 @@ var interval = (ms, doFirst, callback) => {
     }
   };
 };
-var src_default = { intervalReturn, interval };
+var src_default = { intervalReturn, recursiveReturn, interval };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   interval,
-  intervalReturn
+  intervalReturn,
+  recursiveReturn
 });

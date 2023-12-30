@@ -1,36 +1,40 @@
-interface InterfaceCallbackPromise {
-    (resolve: (val: any) => void, reject: (val: any) => void): void;
-}
-interface InterfaceCallbackWithStop {
-    (stop: () => void): void;
-}
+type TypeCbPromise = (resolve: (val: any) => void, reject: (val: any) => void) => void;
+type TypeCbPromiseMod = (repeat: () => void, resolve: (val: any) => void, reject: (val: any) => void) => void;
+type TypeCbWithStop = (stop: () => void) => void;
 
 /**
  *
- * @param_ms time ms
- * @param_doFirst run the first and immediate callback without waiting for the setInterval time
- * @param_callback callback with value function resolve(result) | function reject(result)
+ * @param ms time ms
+ * @param doFirst run the first and immediate callback without waiting for the setInterval time
+ * @param callback callback with value function resolve(result) | function reject(result)
  * @returns any. automatic will stop interval in background
  */
-declare const intervalReturn: (ms: number, doFirst: boolean, callback: InterfaceCallbackPromise) => Promise<unknown>;
+declare const intervalReturn: (ms: number, doFirst: boolean, callback: TypeCbPromise) => Promise<unknown>;
 /**
  *
- * @param_ms time ms
- * @param_doFirst run the first and immediate callback without waiting for the setInterval time
- * @param_callback callback with value function stop
+ * @param callback callback with value function repeat(delay) | resolve(result) | function reject(result)
  * @returns any
  */
-declare const interval: (ms: number, doFirst: boolean, callback: InterfaceCallbackWithStop) => {
+declare const recursiveReturn: (callback: TypeCbPromiseMod) => Promise<unknown>;
+/**
+ *
+ * @param ms time ms
+ * @param doFirst run the first and immediate callback without waiting for the setInterval time
+ * @param callback callback with value function stop
+ * @returns any
+ */
+declare const interval: (ms: number, doFirst: boolean, callback: TypeCbWithStop) => {
     idInterval: number;
     stop: () => void;
 };
 
 declare const _default: {
-    intervalReturn: (ms: number, doFirst: boolean, callback: InterfaceCallbackPromise) => Promise<unknown>;
-    interval: (ms: number, doFirst: boolean, callback: InterfaceCallbackWithStop) => {
+    intervalReturn: (ms: number, doFirst: boolean, callback: TypeCbPromise) => Promise<unknown>;
+    recursiveReturn: (callback: TypeCbPromiseMod) => Promise<unknown>;
+    interval: (ms: number, doFirst: boolean, callback: TypeCbWithStop) => {
         idInterval: number;
         stop: () => void;
     };
 };
 
-export { _default as default, interval, intervalReturn };
+export { _default as default, interval, intervalReturn, recursiveReturn };
