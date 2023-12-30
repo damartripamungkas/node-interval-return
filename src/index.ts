@@ -1,62 +1,100 @@
-import { InterfaceCallbackPromise, InterfaceCallbackWithStop } from "./iface";
+import { TypeCbPromise, TypeCbPromiseMod, TypeCbWithStop } from "./type"
 
 /**
  *
- * @param_ms time ms
- * @param_doFirst run the first and immediate callback without waiting for the setInterval time
- * @param_callback callback with value function resolve(result) | function reject(result)
+ * @param ms time ms
+ * @param doFirst run the first and immediate callback without waiting for the setInterval time
+ * @param callback callback with value function resolve(result) | function reject(result)
  * @returns any. automatic will stop interval in background
  */
-const intervalReturn = async (ms: number, doFirst: boolean, callback: InterfaceCallbackPromise) => {
+const intervalReturn = async (ms: number, doFirst: boolean, callback: TypeCbPromise) => {
   return new Promise((resolve, reject) => {
+    let toggle = true
     const returnCallback = (id: any) => {
       callback(
         (val: any) => {
-          clearInterval(id), resolve(val);
+          toggle = false
+          clearInterval(id), resolve(val)
         },
         (val: any) => {
-          clearInterval(id), reject(val);
+          toggle = false
+          clearInterval(id), reject(val)
         }
-      );
-    };
+      )
+    }
 
     if (doFirst === true) {
-      returnCallback(null);
+      returnCallback(null)
     }
 
     const idInterval = setInterval(() => {
-      returnCallback(idInterval);
-    }, ms);
-  });
-};
+      if (toggle) {
+        returnCallback(idInterval)
+      }
+    }, ms)
+  })
+}
 
 /**
  *
- * @param_ms time ms
- * @param_doFirst run the first and immediate callback without waiting for the setInterval time
- * @param_callback callback with value function stop
+ * @param callback callback with value function repeat(delay) | resolve(result) | function reject(result)
  * @returns any
  */
-const interval = (ms: number, doFirst: boolean, callback: InterfaceCallbackWithStop) => {
+const recursiveReturn = async (callback: TypeCbPromiseMod) => {
+  return new Promise((resolve, reject) => {
+    let toggle = true
+    const returnCallback = () => {
+      callback(
+        () => {
+          if (toggle) {
+            returnCallback()
+          }
+        },
+        (val: any) => {
+          toggle = false
+          resolve(val)
+        },
+        (val: any) => {
+          toggle = false
+          reject(val)
+        }
+      )
+    }
+
+    returnCallback()
+  })
+}
+
+/**
+ *
+ * @param ms time ms
+ * @param doFirst run the first and immediate callback without waiting for the setInterval time
+ * @param callback callback with value function stop
+ * @returns any
+ */
+const interval = (ms: number, doFirst: boolean, callback: TypeCbWithStop) => {
+  let toggle = true
   if (doFirst === true) {
     callback(() => {
-      clearInterval(null);
-    });
+      clearInterval(null)
+    })
   }
 
   const idInterval = setInterval(() => {
-    callback(() => {
-      clearInterval(idInterval);
-    });
-  }, ms);
+    if (toggle) {
+      callback(() => {
+        clearInterval(idInterval)
+      })
+    }
+  }, ms)
 
   return {
     idInterval,
     stop: () => {
-      clearInterval(idInterval);
+      clearInterval(idInterval)
     },
-  };
-};
+  }
+}
 
-export { intervalReturn, interval };
-export default { intervalReturn, interval };
+export { intervalReturn, recursiveReturn, interval }
+export default { intervalReturn, recursiveReturn, interval }
