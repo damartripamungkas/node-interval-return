@@ -19,7 +19,10 @@
     "set-interval-return",
     "timers",
     "timer",
-    "interval-return"
+    "interval-return",
+    "recursive-return",
+    "recursive-promise",
+    "recursive-function"
   ],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
