@@ -1,4 +1,5 @@
 import { TypeCbPromise, TypeCbPromiseMod, TypeCbWithStop } from "./type"
+const delay = (ms: number) => new Promise((res: any) => setTimeout(() => res(), ms))
 
 /**
  *
@@ -45,8 +46,12 @@ const recursiveReturn = async (callback: TypeCbPromiseMod) => {
     let toggle = true
     const returnCallback = () => {
       callback(
-        () => {
+        async (delayMs?: number) => {
           if (toggle) {
+            if (delayMs) {
+              await delay(delayMs)
+            }
+
             returnCallback()
           }
         },
