@@ -25,6 +25,7 @@ __export(src_exports, {
   recursiveReturn: () => recursiveReturn
 });
 module.exports = __toCommonJS(src_exports);
+var delay = (ms) => new Promise((res) => setTimeout(() => res(), ms));
 var intervalReturn = async (ms, doFirst, callback) => {
   return new Promise((resolve, reject) => {
     let toggle = true;
@@ -55,8 +56,11 @@ var recursiveReturn = async (callback) => {
     let toggle = true;
     const returnCallback = () => {
       callback(
-        () => {
+        async (delayMs) => {
           if (toggle) {
+            if (delayMs) {
+              await delay(delayMs);
+            }
             returnCallback();
           }
         },

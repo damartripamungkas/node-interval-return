@@ -1,5 +1,5 @@
 type TypeCbPromise = (resolve: (val: any) => void, reject: (val: any) => void) => void;
-type TypeCbPromiseMod = (repeat: () => void, resolve: (val: any) => void, reject: (val: any) => void) => void;
+type TypeCbPromiseMod = (repeat: (delayMs?: number) => void, resolve: (val: any) => void, reject: (val: any) => void) => void;
 type TypeCbWithStop = (stop: () => void) => void;
 
 /**
