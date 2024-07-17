@@ -30,26 +30,6 @@ npm install node-interval-return
 
 ### ✏️ Example :
 
-#### Typescript
-
-```javascript
-import { interval, intervalReturn } from "node-interval-return";
-```
-
-#### ESM (import)
-
-```javascript
-import { interval, intervalReturn } from "node-interval-return";
-```
-
-#### CommonJs (require)
-
-```javascript
-const { interval, intervalReturn } = require("node-interval-return");
-```
-
-#### Usage
-
 full example see [here](./test)
 
 ```javascript

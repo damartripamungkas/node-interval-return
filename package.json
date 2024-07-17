@@ -1,6 +1,6 @@
 {
   "name": "node-interval-return",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Simple interval return with promise",
   "scripts": {
     "test": "node ./test/interval.js",
@@ -39,6 +39,6 @@
     "@typescript-eslint/eslint-plugin": "^7.16.1",
     "@typescript-eslint/parser": "^7.16.1",
     "eslint": "^9.7.0",
-    "tsup": "^8.1.1"
+    "tsup": "^8.1.0"
   }
 }
