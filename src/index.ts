@@ -81,7 +81,7 @@ const interval = (ms: number, doFirst: boolean, callback: TypeCbWithStop) => {
   let toggle = true
   if (doFirst === true) {
     callback(() => {
-      clearInterval(null)
+      clearInterval(undefined)
     })
   }
 

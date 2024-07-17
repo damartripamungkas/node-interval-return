@@ -25,7 +25,7 @@ This package is designed to run `setInterval` with several features. It includes
 ### 💻 Step to install :
 
 ```
-npm install --production node-interval-return
+npm install node-interval-return
 ```
 
 ### ✏️ Example :
@@ -50,37 +50,42 @@ const { interval, intervalReturn } = require("node-interval-return");
 
 #### Usage
 
-```javascript
-const { intervalReturn } = require("node-interval-return");
+full example see [here](./test)
 
-(async () => {
+```javascript
+const { intervalReturn } = require(`node-interval-return`);
+
+const run = (async () => {
   const runInterval1 = await intervalReturn(5000, true, (res, rej) => {
     res("is result value");
-  });
+  })
   console.log(
     `[runInterval1] running with do first without waiting interval complete, result: ${runInterval1}`
-  );
+  )
 
   try {
     const runInterval2 = await intervalReturn(5000, true, (res, rej) => {
       rej("is error value");
-    });
+    })
   } catch (err) {
     console.log(
       `[runInterval2] running with do first without waiting interval complete, error: ${err}`
-    );
+    )
   }
-})();
-```
+}
 
-full example see [here](./test)
+run()
+```
 
 ### 🧾 Pre-Requisistes :
 
 ```
-node.js
+- node.js / bun.js / deno.js
+- (optional) typescript
+- (optional) commonJS
+- (optional) ESM
 ```
 
 ### 📝 License :
 
-Licensed under the [MIT License](./LICENSE).
+Licensed see [here](./LICENSE).
