@@ -1,3 +1,10 @@
-export type TypeCbPromise = (resolve: (val: any) => void, reject: (val: any) => void) => void
-export type TypeCbPromiseMod = (repeat: (delayMs?: number) => void, resolve: (val: any) => void, reject: (val: any) => void) => void
-export type TypeCbWithStop = (stop: () => void) => void
+type TypeFuncAny = (val: any) => void
+type TypeFuncVoid = () => void
+type TypeState = {
+  counter: number
+  [key: string]: any
+}
+
+export type TypeCbPromise = (resolve: TypeFuncAny, reject: TypeFuncAny, state: TypeState) => void
+export type TypeCbPromiseMod = (repeat: (delayMs?: number) => void, resolve: TypeFuncAny, reject: TypeFuncAny, state: TypeState) => void
+export type TypeCbWithStop = (stop: TypeFuncVoid, state: TypeState) => void
