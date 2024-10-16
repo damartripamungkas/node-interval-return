@@ -1,10 +1,12 @@
 {
   "name": "node-interval-return",
   "version": "1.1.6",
-  "description": "Simple interval return with promise",
+  "description": "A lightweight Node.js module that returns a promise-based interval, simplifying the execution of recurring tasks with flexible and reliable asynchronous control. Ideal for developers looking to manage intervals in a clean and efficient way.",
+  "type": "commonjs",
   "scripts": {
-    "test": "node ./test/interval.js",
+    "test": "vitest --test-timeout=0",
     "build": "tsup",
+    "start": "node ./dist/src/index.js",
     "publish:package": "npm run build && npm publish"
   },
   "homepage": "https://github.com/damartripamungkas/node-interval-return",
@@ -36,9 +38,11 @@
   "author": "damartripamungkas",
   "license": "MIT",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^7.16.1",
-    "@typescript-eslint/parser": "^7.16.1",
-    "eslint": "^9.7.0",
-    "tsup": "^8.1.0"
+    "@types/node": "^22.7.5",
+    "@typescript-eslint/eslint-plugin": "^8.9.0",
+    "@typescript-eslint/parser": "^8.9.0",
+    "eslint": "^9.12.0",
+    "tsup": "^8.3.0",
+    "vitest": "^2.1.3"
   }
 }
