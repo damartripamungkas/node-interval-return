@@ -33,28 +33,38 @@ npm install node-interval-return
 full example see [here](./test)
 
 ```javascript
-const { intervalReturn } = require(`node-interval-return`);
+const { recursiveReturn, interval, intervalReturn } = require(`node-interval-return`)
 
-const run = (async () => {
-  const runInterval1 = await intervalReturn(5000, true, (res, rej) => {
-    res("is result value");
-  })
-  console.log(
-    `[runInterval1] running with do first without waiting interval complete, result: ${runInterval1}`
-  )
-
-  try {
-    const runInterval2 = await intervalReturn(5000, true, (res, rej) => {
-      rej("is error value");
-    })
-  } catch (err) {
-    console.log(
-      `[runInterval2] running with do first without waiting interval complete, error: ${err}`
-    )
+// function recursiveReturn
+await recursiveReturn((repeat, resolve, reject, state) => {
+  console.log(`test recursiveReturn(), random: ${Math.random()}`)
+  if (state.counter == 3) {
+    return resolve(true)
   }
-}
 
-run()
+  repeat(1000)
+  state.counter += 1
+})
+
+// function intervalReturn
+await intervalReturn(1000, true, (resolve, reject, state) => {
+  console.log(`test intervalReturn(), random: ${Math.random()}`)
+  if (state.counter == 3) {
+    return resolve(true)
+  }
+
+  state.counter += 1
+})
+
+// function interval
+const resInterval = interval(1000, true, (stop, state) => {
+  console.log(`test interval, random: ${Math.random()}`)
+  if (state.counter == 3) {
+    return stop()
+  }
+
+  state.counter += 1
+})
 ```
 
 ### 🧾 Pre-Requisistes :
