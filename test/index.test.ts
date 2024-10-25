@@ -1,43 +1,40 @@
-import { test, expect } from "vitest"
+import { test } from "vitest"
 import { interval, intervalReturn, recursiveReturn } from "../src/index"
 
 test(`test recursiveReturn()`, async () => {
-  await recursiveReturn((repeat, resolve, reject, state) => {
-    console.log(`test recursiveReturn, random: ${Math.random()}`)
+  const res = await recursiveReturn((repeat, resolve, reject, state) => {
     if (state.counter == 3) {
-      return resolve(true)
+      return resolve(state.counter)
     }
 
-    repeat(1000)
     state.counter += 1
+    repeat(1000)
   })
+  console.log(`recursiveReturn(): ${res}`)
 })
 
 test(`test intervalReturn()`, async () => {
-  await intervalReturn(1000, true, (resolve, reject, state) => {
-    console.log(`test intervalReturn, random: ${Math.random()}`)
+  const res = await intervalReturn(1000, true, (resolve, reject, state) => {
     if (state.counter == 3) {
-      return resolve(true)
+      return resolve(state.counter)
     }
 
     state.counter += 1
   })
+  console.log(`intervalReturn(): ${res}`)
 })
 
 test(`test interval()`, async () => {
-  const resInterval = interval(1000, true, (stop, state) => {
-    console.log(`test interval, random: ${Math.random()}`)
-    if (state.counter == 3) {
-      return stop()
-    }
+  const res = await new Promise((resolve) => {
+    interval(1000, true, (stop, state) => {
+      if (state.counter == 3) {
+        resolve(state.counter)
+        return stop()
+      }
 
-    state.counter += 1
+      state.counter += 1
+    })
   })
 
-  await recursiveReturn((repeat, resolve) => {
-    if (resInterval.state.counter == 3) {
-      return resolve(true)
-    }
-    repeat(200)
-  })
+  console.log(`interval(): ${res}`)
 })
