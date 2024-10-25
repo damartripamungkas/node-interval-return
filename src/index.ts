@@ -1,25 +1,27 @@
 import { TypeCbPromise, TypeCbPromiseMod, TypeCbWithStop } from "./type"
 const delay = (ms: number) => new Promise((res: any) => setTimeout(() => res(), ms))
+const defaultState = () => ({ counter: 0 })
 
 /**
  *
+ * @info default state.counter start from 0
  * @param ms time ms
  * @param doFirst run the first and immediate callback without waiting for the setInterval time
  * @param callback callback with value function resolve(result) | function reject(result) | state
  * @returns Promise<any>. automatic will stop interval in background
  */
-const intervalReturn = (ms: number, doFirst: boolean, callback: TypeCbPromise) => {
+export const intervalReturn = (ms: number, doFirst: boolean, callback: TypeCbPromise) => {
   let toggle = true
-  const state = { counter: 1 }
+  const state = defaultState()
   const returnCallback = (id: any, resolve: any, reject: any) => {
     callback(
-      (val: any) => {
+      (result: any) => {
         toggle = false
-        clearInterval(id), resolve(val)
+        clearInterval(id), resolve(result)
       },
-      (val: any) => {
+      (error: any) => {
         toggle = false
-        clearInterval(id), reject(val)
+        clearInterval(id), reject(error)
       },
       state
     )
@@ -40,12 +42,13 @@ const intervalReturn = (ms: number, doFirst: boolean, callback: TypeCbPromise) =
 
 /**
  *
+ * @info default state.counter start from 0
  * @param callback callback with value function repeat(delay) | resolve(result) | function reject(result) | state
  * @returns Promise<any>
  */
-const recursiveReturn = (callback: TypeCbPromiseMod) => {
+export const recursiveReturn = (callback: TypeCbPromiseMod) => {
   let toggle = true
-  const state = { counter: 1 }
+  const state = defaultState()
   const returnCallback = (resolve: any, reject: any) => {
     callback(
       async (delayMs?: number) => {
@@ -57,13 +60,13 @@ const recursiveReturn = (callback: TypeCbPromiseMod) => {
           returnCallback(resolve, reject)
         }
       },
-      (val: any) => {
+      (result: any) => {
         toggle = false
-        resolve(val)
+        resolve(result)
       },
-      (val: any) => {
+      (error: any) => {
         toggle = false
-        reject(val)
+        reject(error)
       },
       state
     )
@@ -76,14 +79,15 @@ const recursiveReturn = (callback: TypeCbPromiseMod) => {
 
 /**
  *
+ * @info default state.counter start from 0
  * @param ms time ms
  * @param doFirst run the first and immediate callback without waiting for the setInterval time
  * @param callback callback with value function stop() | state
  * @returns idInterval | state | function stop()
  */
-const interval = (ms: number, doFirst: boolean, callback: TypeCbWithStop) => {
+export const interval = (ms: number, doFirst: boolean, callback: TypeCbWithStop) => {
   let toggle = true
-  const state = { counter: 0 }
+  const state = defaultState()
   if (doFirst === true) {
     callback(() => {
       clearInterval(undefined)
@@ -109,5 +113,4 @@ const interval = (ms: number, doFirst: boolean, callback: TypeCbWithStop) => {
   }
 }
 
-export { intervalReturn, recursiveReturn, interval }
 export default { intervalReturn, recursiveReturn, interval }
