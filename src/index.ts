@@ -51,10 +51,13 @@ export const recursiveReturn = (callback: TypeCbPromiseMod) => {
   const state = defaultState()
   const returnCallback = (resolve: any, reject: any) => {
     callback(
-      async (delayMs?: number) => {
+      (delayMs?: number) => {
         if (toggle) {
           if (delayMs) {
-            await delay(delayMs)
+            delay(delayMs).then(() => {
+              returnCallback(resolve, reject)
+            })
+            return
           }
 
           returnCallback(resolve, reject)
